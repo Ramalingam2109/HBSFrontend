@@ -1,0 +1,48 @@
+---
+query: "inside the react application working "
+references:
+  - "File: /Untitled-1"
+generationTime: 2025-10-30T06:30:26.733Z
+---
+flowchart TB
+  Start(("Start"))
+  Index["index.html\n<div id='root'>"]
+  Main["/src/main.jsx\n-- initialize React, Clerk (VITE key)"]
+  App["<App />\n(App root)"]
+  Init["Init: Tailwind / global CSS\nRegister routes & providers"]
+  AuthCheck{"User authenticated?"}
+  SignIn["Clerk SignIn/SignUp UI"]
+  Protected["ProtectedRoute wrapper\n(redirect to SignIn if no)"]
+  Router["react-router-dom\nRoutes"]
+  Header["Header / Nav"]
+  Home["HomePage"]
+  Hotels["HotelsListPage"]
+  HotelDetail["HotelDetailPage"]
+  BookingStart["Start Booking\n(select dates, guests)"]
+  CheckAvail{"Availability OK?"}
+  CallAPI["POST /api/bookings\n(send booking data)"]
+  Confirm["Booking Confirmed\nshow confirmation"]
+  Profile["UserProfilePage\n(show bookings)"]
+  State["Local state / Context\n(useState, useContext)"]
+  Backend["Backend API\n(auth, bookings)"]
+  End(("End"))
+
+  Start --> Index --> Main --> App --> Init
+  Init --> AuthCheck
+  AuthCheck -- No --> SignIn --> AuthCheck
+  AuthCheck -- Yes --> Router
+  Router --> Header
+  Router --> Home
+  Router --> Hotels
+  Router --> HotelDetail
+  Router --> Profile
+  HotelDetail --> BookingStart --> CheckAvail
+  CheckAvail -- No --> HotelDetail
+  CheckAvail -- Yes --> Protected --> CallAPI --> Confirm
+  CallAPI --> Backend
+  Backend --> CallAPI
+  Confirm --> Profile
+  App --> State
+  State --> Hotels
+  State --> HotelDetail
+  Confirm --> End
